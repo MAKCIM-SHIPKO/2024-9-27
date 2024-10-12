@@ -1,0 +1,43 @@
+#include <iostream>
+
+class Date {
+private:
+    int day;
+    int month;
+    int year;
+
+public:
+    Date(int day, int month, int year) : day(day), month(month), year(year) {}
+
+    void displayDate() {
+        std::cout << day << "/" << month << "/" << year << std::endl;
+    }
+
+    Date operator+(int days) {
+        int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        Date result = *this;
+
+        result.day += days;
+
+        while (result.day > daysInMonth[result.month-1]) {
+            result.day -= daysInMonth[result.month-1];
+            result.month++;
+            if (result.month > 12) {
+                result.month = 1;
+                result.year++;
+            }
+        }
+
+        return result;
+    }
+};
+
+int main() {
+    Date currentDate(27, 2, 2003);
+    currentDate.displayDate();
+
+    Date futureDate = currentDate + 8364;
+    futureDate.displayDate();
+
+    return 0;
+}

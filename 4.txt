@@ -1,0 +1,60 @@
+#include <iostream>
+
+class Money {
+private:
+    int dollars;
+    int cents;
+
+public:
+    Money(int dollars, int cents) : dollars(dollars), cents(cents) {}
+
+    void displayMoney() {
+        std::cout << dollars << "." << cents << " долларов" << std::endl;
+    }
+
+    int getDollars() const {
+        return dollars; 
+    }
+
+    int getCents() const {
+        return cents; 
+    }
+
+    Money operator-(const Money& other) {
+        Money result = *this;
+
+        if (result.cents < other.cents) {
+            result.cents += 100;
+            result.dollars--;
+        }
+
+        result.dollars -= other.dollars;
+        result.cents -= other.cents;
+
+        if (result.dollars < 0) {
+            std::cerr << "Error: Разница отрицательная" << std::endl;
+            return Money(0, 0);
+        }
+
+        return result;
+    }
+};
+
+int main() {
+    Money account1(50, 75);
+    Money account2(20, 50);
+
+    std::cout << "Сумма1: ";
+    account1.displayMoney();
+
+    std::cout << "Сумма2: ";
+    account2.displayMoney();
+
+    Money result = account1 - account2;
+    if (result.getDollars() > 0 || result.getCents() > 0) {
+        std::cout << "разница: ";
+        result.displayMoney();
+    }
+
+    return 0;
+}
